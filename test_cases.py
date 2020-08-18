@@ -1,3 +1,5 @@
+# for now this file has not been converted to the NK logic and still reflects the harpie base
+
 from combinations import combo
 
 
@@ -82,4 +84,3 @@ def test_combo():
 
 
 test_combo()
-s

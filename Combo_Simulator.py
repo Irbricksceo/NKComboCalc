@@ -17,52 +17,47 @@ def draw(deck, n):
     return hand
 
 
-# Keeps track of numbers times we can successfully combo
+# Keeps track of results
 def combo_sim(deck, n):
-    success_no_hts = 0
-    success_2hts = 0
-    success_vs_nibiru = 0
-    success_vs_imperm = 0
-    num_phalanx_bricks = 0
-    opened_ht = 0
-    success_partial_combo = 0
+    full_combo = 0
+    partial_combo = 0
+    trap_dump = 0
+    herald_extend = 0
+    plays_through_one_ht = 0
+
     for i in range(0, n):
         test_hand = draw(deck, 5)
-        #print("Hand: " + ', '.join(map(str, test_hand)))
+        print("Hand: " + ', '.join(map(str, test_hand)))
         shuffle(deck)
         results = combo(test_hand, deck)
+
         if results[0]:
-            success_no_hts += 1
+            full_combo += 1
+
         if results[1]:
-            success_2hts += 1
+            partial_combo += 1
 
         if results[2]:
-            success_vs_nibiru += 1
+            trap_dump += 1
 
         if results[3]:
-            opened_ht += 1
+            herald_extend += 1
 
         if results[4]:
-            success_vs_imperm += 1
+            plays_through_one_ht += 1
 
-        if results[5]:
-            num_phalanx_bricks += 1
+    # Converts totals into percentages
+    fullratio = round(full_combo / n * 100, 2)
+    partialratio = round(partial_combo / n * 100, 2)
+    trapratio = round(trap_dump / n * 100, 2)
+    heraldratio = round(herald_extend / n * 100, 2)
+    throughonehtratio = round(plays_through_one_ht / n * 100, 2)
 
-        if results[6]:
-            success_partial_combo += 1
+    # Outputs results. commented out lines are tests without the logic fully implemented yet.
+    print("Full Combo Success Rate through no Handtraps: " + str(fullratio) + "%")
+    print("Partial Combo Success Rate through no Handtraps: " + str(partialratio) + "%")
+    print("Percentage of hands that mill at least 1 trap: " + str(trapratio) + "%")
+    print("Percentage of hands that can extend into herald: " + str(heraldratio) + "%")
+    print("Percentage of hands that can reach at least partial combo through one HT: " + str(throughonehtratio) + "%")
 
-    # Prints the results
-    no_hts_ratio = round(success_no_hts / n * 100, 2)
-    two_hts_ratio = round(success_2hts / n * 100, 2)
-    nibiru_ratio = round(success_vs_nibiru / n * 100, 2)
-    imperm_ratio = round(success_vs_imperm / n * 100, 2)
-    open_ht_ratio = round(opened_ht / n * 100, 2)
-    phalanx_brick_ratio = round(num_phalanx_bricks / n * 100, 2)
-    partial_ratio = round(success_partial_combo / n * 100, 2)
-    full_partial_ratio = round((success_partial_combo + success_no_hts) / n * 100, 2)
-    print("Full Combo Success Rate through no Handtraps: " + str(no_hts_ratio) + "%")
-    #print("Full + Partial Combo Success Rate through no Handtraps: " + str(full_partial_ratio) + "%")
-    print("Combo Success Rate through Nibiru: " + str(nibiru_ratio) + "%")
-    print("Combo with drawing at least 1 extra Handtrap/Disruption : " + str(open_ht_ratio) + "%")
-    print("Phalanx Brick Rate: " + str(phalanx_brick_ratio) + "%")
-    # print("Combo with atleast drawing 2 Handtraps in your hand: " + str(two_hts_ratio) + "%")
+
